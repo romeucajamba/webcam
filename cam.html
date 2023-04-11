@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web_Cam</title>
+</head>
+<body>
+    <video autoplay></video><!--Fazer o vídeo ou a foto-->
+    <canvas></canvas><!--Vai conter o vídeo ou a foto-->
+    <button>Tirar Foto</button><!--Botão pra Fazer o vídeo ou a foto-->
+    
+    <script>
+        var video = document.querySelector('video');
+
+        navigator.mediaDevices.getUserMedia({video:true})
+        .then(stream =>{
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(error => {
+           console.log(error); 
+        });
+        document.querySelector('button').addEventListener('click', () => {
+            var canvas = document.querySelector('canvas');
+            canvas.height = video.videoHeight;//Altura do video na tag canvas
+            canvas.width = video.videoWidth; //Largura do video na tag canvas
+             var context = canvas.getContext('2d');
+             context.drawImage(video, 0, 0);
+             var link = document.createElement('a');
+             link.download = 'foto.png';
+             link.href = canvas.toDataURL();
+             link.textContent = 'Clique para baixar a imagem!'
+             document.body.appendChild(link);
+        });/*uma promess, um objecto*//*Está a pedir pra o nvegador acessar a camera de vídeo e vai executar uma determinada função.... tudo que demorar pra executar podemos usar uma promess*/
+    </script>
+</body>
+</html>
